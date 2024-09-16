@@ -1,0 +1,1 @@
+2C is a revolutionary accountant system, it should never be confused with 1C
