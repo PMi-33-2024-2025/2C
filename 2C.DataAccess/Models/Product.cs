@@ -13,9 +13,11 @@ namespace _2C.DataAccess.Models
     {
         [Key]
         public Guid Id { get; set; }
+
         [Required(ErrorMessage ="Enter the ProductName!")]
         public required string Name { get; set; }
         public double Price { get; set; }
+
         [Range(0, 1000000)]
         public int Quantity {  get; set; }
         public Guid StorageId { get; set; }

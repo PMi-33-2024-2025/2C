@@ -10,8 +10,11 @@ namespace _2C.DataAccess.Models
     public class Storage
     {
         [Key]
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public string? Address {  get; set; }
 
+        public ICollection<User> Users { get; set; }
+
+        public ICollection<Product> Product { get; set; }
     }
 }
