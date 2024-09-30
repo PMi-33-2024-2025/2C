@@ -1,4 +1,5 @@
-﻿using _2C.DataAccess.Models;
+﻿using _2C.DataAccess.Configurations;
+using _2C.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,10 @@ namespace _2C.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new StorageConfiguration());
         }
     }
 }
