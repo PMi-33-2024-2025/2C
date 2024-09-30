@@ -1,1 +1,2 @@
 2C is a revolutionary accountant system, it should never be confused with 1C
+ER Diagram: https://lucid.app/lucidchart/5e7693f1-c2ec-45f1-9568-1a27d02f01bc/edit?viewport_loc=478%2C77%2C1707%2C743%2C0_0&invitationId=inv_3e3f1adf-af4c-4655-ae12-7bb4fa9b1039
