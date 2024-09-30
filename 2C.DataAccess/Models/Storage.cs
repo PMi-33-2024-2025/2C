@@ -15,6 +15,6 @@ namespace _2C.DataAccess.Models
 
         public ICollection<User> Users { get; set; }
 
-        public ICollection<Product> Product { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }

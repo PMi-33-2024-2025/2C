@@ -24,12 +24,14 @@ namespace _2C.DataAccess.Models
 
         [Required(ErrorMessage ="Enter the Password")]
         [Length(8, 32)]
-        public string Password { get; set; }
-
-        public Role Role { get; set; } = new Role { Name = "User" };
+        public string Password { get; set; }      
 
         [ForeignKey(nameof(Storage))]
         public long StorageId { get; set; }
         public Storage Storage { get; set; }
+
+        [ForeignKey(nameof(Role))]
+        public int RoleId { get; set; }
+        public Role Role { get; set; } = new Role { Name = "User" };
     }
 }
