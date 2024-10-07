@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace _2C.DataAccess.Models
 {
-    public class Role
-    {
-        public int Id { get; set; }
-        public string Name {  get; set; }
-        
-        public ICollection<User> Users { get; set; }
-    }
+	public class Role
+	{
+		[Key]
+		public int Id { get; set; }
+		public string Name { get; set; }
+
+		public ICollection<User> Users { get; set; }
+	}
 }
