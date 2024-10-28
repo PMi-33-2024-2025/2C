@@ -24,7 +24,7 @@ namespace _2C.BusinessLogic.Services
 			this.context = context;
 		}
 
-		public async Task<bool> Login(LoginDTO login)
+		public async Task<bool> Login(LoginDto login)
 		{
 			User? user = await context.Users.FirstOrDefaultAsync(x => x.Email == login.Email).ConfigureAwait(false);
 			if (user.Password == login.Password)
