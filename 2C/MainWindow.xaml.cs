@@ -28,9 +28,24 @@ namespace _2C
 
         private async void AddProduct_Click(object sender, RoutedEventArgs e)
         {
-            //// Code to add a new product
-            //var newProduct = new Product { /* Initialize with properties */ };
-            //await _productViewModel.AddProduct(newProduct);
+            var addProductWindow = new AddProductWindow();
+            bool? result = addProductWindow.ShowDialog();
+
+            if (result == true && addProductWindow.IsProductAdded)
+            {
+                // Create a new product with the entered data
+                var newProduct = new Product
+                {
+                    Id = Guid.NewGuid(),
+                    Name = addProductWindow.ProductName,
+                    Price = addProductWindow.ProductPrice,
+                    Quantity = addProductWindow.ProductQuantity,
+                    StorageId = addProductWindow.ProductStorageId
+                };
+
+                // Add the new product using the ViewModel's method
+                await _productViewModel.AddProduct(newProduct);
+            }
         }
 
         private async void EditProduct_Click(object sender, RoutedEventArgs e)
@@ -55,7 +70,7 @@ namespace _2C
         {
             // Refresh the product list
             await _productViewModel.LoadProducts();
-        }
+        }        
 
     }
 }

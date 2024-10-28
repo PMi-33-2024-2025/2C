@@ -50,9 +50,9 @@
             </StackPanel>
 
             <!-- Data Grid Section -->
-            <DataGrid Name="OrdersDataGrid" ItemsSource="{Binding Products}" AutoGenerateColumns="False" Grid.Row="1" BorderBrush="Transparent" VerticalContentAlignment="Center">
+            <DataGrid Name="OrdersDataGrid" ItemsSource="{Binding Products}" AutoGenerateColumns="False" Grid.Row="1" BorderBrush="Transparent" VerticalContentAlignment="Center" IsReadOnly ="True">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="100"/>
+                    <!--<DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="100"/>-->
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="150"/>
                     <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="100"/>
                     <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="100"/>
@@ -61,10 +61,10 @@
             </DataGrid>
 
             <!-- Pagination Buttons Section -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10" Grid.Row="2">
+            <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10" Grid.Row="2">
                 <Button Content="&lt;&lt;" Width="30" Height="25" Margin="2" Background="#0C000000" BorderBrush="Transparent"  FontSize="12"/>
                 <Button Content="&lt;" Width="30" Height="25" Margin="2" Background="#0C000000" BorderBrush="Transparent"  FontSize="12"/>
-                <!-- Page Number Buttons -->
+                --><!-- Page Number Buttons --><!--
                 <Button Content="1" Width="30" Height="25" Margin="2" Background="#0C000000" BorderBrush="Transparent" FontSize="12" />
                 <Button Content="2" Width="30" Height="25" Margin="2" Background="#0C000000" BorderBrush="Transparent"  FontSize="12"/>
                 <Button Content="3" Width="30" Height="25" Margin="2" Background="#0C000000" BorderBrush="Transparent"  FontSize="12"/>
@@ -72,7 +72,7 @@
 
                 <Button Content="&gt;" Width="30" Height="25" Margin="2" Background="#0C000000" BorderBrush="Transparent"  FontSize="12"/>
                 <Button Content="&gt;&gt;" Width="30" Height="25" Margin="2" Background="#0C000000" BorderBrush="Transparent"  FontSize="12"/>
-            </StackPanel>
+            </StackPanel>-->
         </Grid>
     </Grid>
 </Window>
