@@ -13,8 +13,8 @@ namespace _2C.DataAccess.Models
 		public long Id { get; set; }
 		public string? Address { get; set; }
 
-		public ICollection<User> Users { get; set; }
+		public ICollection<User>? Users { get; set; }
 
-		public ICollection<Product> Products { get; set; }
+		public ICollection<Product>? Products { get; set; }
 	}
 }

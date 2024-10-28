@@ -29,5 +29,30 @@ namespace _2C.BusinessLogic.Services
         {
             return await context.Products.ToListAsync().ConfigureAwait(false);
         }
+
+        public async Task<Product> GetById(Guid id)
+        {
+            return await context.Products.FirstOrDefaultAsync(x => x.Id == id).ConfigureAwait(false);
+        }
+
+        public async Task Update(Guid id, string name, double price, int quantity, long storageId)
+        {
+            var productToUpdate = new Product { Id = id, Name = name, Price = price , Quantity = quantity};
+            var product = await context.Products.FirstOrDefaultAsync(x => x.Id == id).ConfigureAwait(false);
+
+            product = productToUpdate;
+            product.StorageId = storageId;
+            await context.SaveChangesAsync().ConfigureAwait(false);
+        }
+
+        public async Task Delete(Guid id)
+        {
+            var productToRemove = await context.Products.FirstOrDefaultAsync(x => x.Id == id).ConfigureAwait(false);
+            if(productToRemove != null)
+            {
+                context.Products.Remove(productToRemove);
+            }
+            await context.SaveChangesAsync().ConfigureAwait(false);
+        }
     }
 }
