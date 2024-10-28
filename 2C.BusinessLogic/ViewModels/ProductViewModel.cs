@@ -2,6 +2,7 @@
 using _2C.DataAccess.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -19,11 +20,8 @@ namespace _2C.BusinessLogic.ViewModels
             get => _selectedProduct;
             set
             {
-                if (_selectedProduct != value)
-                {
-                    _selectedProduct = value;
-                    OnPropertyChanged(nameof(SelectedProduct));
-                }
+                _selectedProduct = value;
+                OnPropertyChanged(); // Notify UI of the change
             }
         }
 
@@ -59,16 +57,16 @@ namespace _2C.BusinessLogic.ViewModels
 
         public async Task DeleteProduct()
         {
-            if (_selectedProduct != null)
+            if (SelectedProduct != null)
             {
-                //await _productService.Delete(_selectedProduct.Id);
-                await LoadProducts();
+                await _productService.Delete(SelectedProduct.Id);
+                Products.Remove(SelectedProduct);
+                SelectedProduct = null; // Clear the selection after deletion
             }
         }
 
-        // INotifyPropertyChanged Implementation
         public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

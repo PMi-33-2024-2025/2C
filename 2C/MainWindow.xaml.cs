@@ -13,18 +13,25 @@ namespace _2C
         // Parameterless constructor required by WPF
         public MainWindow()
         {
-            InitializeComponent();
             _productViewModel = new ProductViewModel(new ProductService(new _2CDbContext())); // Instantiate ProductService or use Dependency Injection
             DataContext = _productViewModel;
+            InitializeComponent();
         }
 
         // Constructor with dependency injection for ProductViewModel
         public MainWindow(ProductViewModel productViewModel)
         {
-            InitializeComponent();
             _productViewModel = productViewModel;
             DataContext = _productViewModel;
+            InitializeComponent();
         }
+        protected override async void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+            await _productViewModel.LoadProducts(); // Load data as soon as the window is initialized
+        }
+
+
 
         private async void AddProduct_Click(object sender, RoutedEventArgs e)
         {
@@ -50,17 +57,37 @@ namespace _2C
 
         private async void EditProduct_Click(object sender, RoutedEventArgs e)
         {
-            // Code to edit the selected product
-            if (_productViewModel.SelectedProduct != null)
+            if (_productViewModel.SelectedProduct == null)
             {
+                MessageBox.Show("Please select a product to edit.", "Edit Product", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            // Create a new EditProductWindow with the selected product
+            var editProductWindow = new EditProductWindow(_productViewModel.SelectedProduct);
+            bool? result = editProductWindow.ShowDialog();
+
+            if (result == true && editProductWindow.IsProductUpdated)
+            {
+                // Call the UpdateProduct method in the ViewModel to save changes to the database
                 await _productViewModel.UpdateProduct();
             }
         }
 
         private async void DeleteProduct_Click(object sender, RoutedEventArgs e)
         {
-            // Code to delete the selected product
-            if (_productViewModel.SelectedProduct != null)
+            if (_productViewModel.SelectedProduct == null)
+            {
+                MessageBox.Show("Please select a product to delete.", "Delete Product", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var result = MessageBox.Show($"Are you sure you want to delete '{_productViewModel.SelectedProduct.Name}'?",
+                                         "Delete Confirmation",
+                                         MessageBoxButton.YesNo,
+                                         MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
             {
                 await _productViewModel.DeleteProduct();
             }

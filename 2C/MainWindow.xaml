@@ -46,11 +46,18 @@
                 <TextBlock Text="Products" FontSize="24" FontWeight="Bold" Margin="0,0,20,0"/>
                 <Button Content="Edit" Width="75" Height="25" Margin="5,0" Click="EditProduct_Click"/>
                 <Button Content="Delete" Width="75" Height="25" Margin="5,0" Click="DeleteProduct_Click"/>
-                <Button Content="Refresh" Width="75" Height="25" Margin="5,0" Click="RefreshProducts_Click"/>
+                <Button Content="Refresh" Width="75" Height="25" Margin="5,0" Click="RefreshProducts_Click"/> 
             </StackPanel>
 
             <!-- Data Grid Section -->
-            <DataGrid Name="OrdersDataGrid" ItemsSource="{Binding Products}" AutoGenerateColumns="False" Grid.Row="1" BorderBrush="Transparent" VerticalContentAlignment="Center" IsReadOnly ="True">
+            <DataGrid Name="OrdersDataGrid" 
+              ItemsSource="{Binding Products}" 
+              SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
+              AutoGenerateColumns="False" 
+              Grid.Row="1" 
+              BorderBrush="Transparent" 
+              VerticalContentAlignment="Center"
+              IsReadOnly="True">
                 <DataGrid.Columns>
                     <!--<DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="100"/>-->
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="150"/>
