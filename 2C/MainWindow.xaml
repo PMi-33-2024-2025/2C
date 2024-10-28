@@ -1,12 +1,79 @@
-﻿<Window x:Class="_2C.MainWindow"
+<Window x:Class="C2.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:_2C"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Orders" Height="500" Width="600" MinWidth="500" MinHeight="500">
     <Grid>
+        <!-- Column Definitions -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="180"/>
+            <!-- Sidebar -->
+            <ColumnDefinition Width="*"/>
+            <!-- Main Content -->
+        </Grid.ColumnDefinitions>
 
+        <!-- Sidebar -->
+        <Grid Grid.Column="0" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="6*"/>
+                <!-- Top Section -->
+                <RowDefinition Height="4*"/>
+                <!-- Bottom Section -->
+            </Grid.RowDefinitions>
+
+            <!-- Top Section of Sidebar -->
+            <StackPanel Grid.Row="0" VerticalAlignment="Top" Margin="0,5,0,5">
+                <Button Content="Dashboard"  Height="30" Background="#0C000000" BorderBrush="Transparent" FontSize="14"/>
+                <Button Content="Orders"  Height="30" Background="#0C000000" BorderBrush="Transparent" FontSize="14"/>
+                <Button Content="Inventory"  Height="30" Background="#0C000000" BorderBrush="Transparent" FontSize="14"/>
+                <Button Content="Reports" Height="30" Background="#0C000000" BorderBrush="Transparent" FontSize="14"/>
+                <Button Content="Employees" Height="30" Background="#0C000000" BorderBrush="Transparent" FontSize="14"/>
+                <Button Content="Customers"  Height="30" Background="#0C000000" BorderBrush="Transparent" FontSize="14"/>
+            </StackPanel>
+
+            <!-- Bottom Section of Sidebar -->
+            <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
+                <Button Content="Settings"  Height="30" Background="#0C000000" BorderBrush="Transparent" FontSize="14"/>
+                <Button Content="Profile" Height="30" Background="#0C000000" BorderBrush="Transparent" FontSize="14"/>
+                <Button Content="Search"  Height="30" Background="#0C000000" BorderBrush="Transparent" FontSize="14"/>
+                <Button Content="Help" Height="30" Background="#0C000000" BorderBrush="Transparent" FontSize="14"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Column="1"  >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Header -->
+                <RowDefinition Height="*"/>
+                <!-- Data Grid -->
+                <RowDefinition Height="Auto"/>
+                <!-- Pagination Buttons -->
+            </Grid.RowDefinitions>
+
+            <!-- Header Section -->
+            <TextBlock Text="Orders" FontSize="24" FontWeight="Bold" Margin="5,0,0,10" Grid.Row="0"/>
+
+            <!-- Data Grid Section -->
+            <DataGrid Name="OrdersDataGrid" AutoGenerateColumns="True" Grid.Row="1" BorderBrush="Transparent" VerticalContentAlignment="Center">
+
+            </DataGrid>
+
+            <!-- Pagination Buttons Section -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10" Grid.Row="2">
+                <Button Content="&lt;&lt;" Width="30" Height="25" Margin="2" Background="#0C000000" BorderBrush="Transparent"  FontSize="12"/>
+                <Button Content="&lt;" Width="30" Height="25" Margin="2" Background="#0C000000" BorderBrush="Transparent"  FontSize="12"/>
+                <!-- Page Number Buttons -->
+                <Button Content="1" Width="30" Height="25" Margin="2" Background="#0C000000" BorderBrush="Transparent" FontSize="12" />
+                <Button Content="2" Width="30" Height="25" Margin="2" Background="#0C000000" BorderBrush="Transparent"  FontSize="12"/>
+                <Button Content="3" Width="30" Height="25" Margin="2" Background="#0C000000" BorderBrush="Transparent"  FontSize="12"/>
+                <Button Content="4" Width="30" Height="25" Margin="2" Background="#0C000000" BorderBrush="Transparent" FontSize="12"/>
+
+                <Button Content="&gt;" Width="30" Height="25" Margin="2" Background="#0C000000" BorderBrush="Transparent"  FontSize="12"/>
+                <Button Content="&gt;&gt;" Width="30" Height="25" Margin="2" Background="#0C000000" BorderBrush="Transparent"  FontSize="12"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>
