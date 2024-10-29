@@ -15,6 +15,7 @@ namespace _2C.BusinessLogic.ViewModels
         public ObservableCollection<Product> Products { get; set; } = new ObservableCollection<Product>();
 
         private Product _selectedProduct;
+        private readonly IUserService _userService;
         public Product SelectedProduct
         {
             get => _selectedProduct;
@@ -24,11 +25,23 @@ namespace _2C.BusinessLogic.ViewModels
                 OnPropertyChanged(); // Notify UI of the change
             }
         }
+        public string UserFullName => $"{_userService.CurrentUser.Name} {_userService.CurrentUser.LastName}";
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         // Constructor
         public ProductViewModel(IProductService productService)
         {
             _productService = productService;
+        }
+        public ProductViewModel(IProductService productService, IUserService userService)
+        {
+            _productService = productService;
+            _userService = userService;
         }
 
         // Methods to interact with ProductService
@@ -65,10 +78,6 @@ namespace _2C.BusinessLogic.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+       
     }
 }

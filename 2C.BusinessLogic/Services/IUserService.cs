@@ -10,7 +10,10 @@ namespace _2C.BusinessLogic.Services
 {
 	public interface IUserService
 	{
-		Task<bool> Login(LoginDto login);
-		Task<bool> Register(User user);
+        User CurrentUser { get; set; }
+
+        Task<bool> Login(LoginDto login);
+        void Logout();
+        Task<bool> Register(User user);
 	}
 }

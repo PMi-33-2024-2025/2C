@@ -9,29 +9,22 @@ namespace _2C
     public partial class MainWindow : Window
     {
         private readonly ProductViewModel _productViewModel;
+        private readonly IUserService _userService;
 
-        // Parameterless constructor required by WPF
-        public MainWindow()
-        {
-            _productViewModel = new ProductViewModel(new ProductService(new _2CDbContext())); // Instantiate ProductService or use Dependency Injection
-            DataContext = _productViewModel;
-            InitializeComponent();
-        }
-
-        // Constructor with dependency injection for ProductViewModel
-        public MainWindow(ProductViewModel productViewModel)
+        public MainWindow(ProductViewModel productViewModel, IUserService userService)
         {
             _productViewModel = productViewModel;
+            _userService = userService;
+
             DataContext = _productViewModel;
             InitializeComponent();
         }
+       
         protected override async void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
             await _productViewModel.LoadProducts(); // Load data as soon as the window is initialized
         }
-
-
 
         private async void AddProduct_Click(object sender, RoutedEventArgs e)
         {
@@ -97,7 +90,20 @@ namespace _2C
         {
             // Refresh the product list
             await _productViewModel.LoadProducts();
-        }        
+        }
+
+        private void LogoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Clear the current user session in UserService
+            _userService.Logout();
+
+            // Open the LoginWindow again
+            var loginWindow = new LoginWindow(_userService);
+            loginWindow.Show();
+
+            // Close the current MainWindow
+            this.Close();
+        }
 
     }
 }

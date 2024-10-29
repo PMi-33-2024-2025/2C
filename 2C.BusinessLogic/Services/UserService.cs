@@ -27,7 +27,7 @@ namespace _2C.BusinessLogic.Services
 		public async Task<bool> Login(LoginDto login)
 		{
 			User? user = await context.Users.FirstOrDefaultAsync(x => x.Email == login.Email).ConfigureAwait(false);
-			if (user.Password == login.Password)
+			if (user != null && user.Password == login.Password)
 			{
 				CurrentUser = user;
 				return true;
@@ -35,15 +35,27 @@ namespace _2C.BusinessLogic.Services
 			return false;
 		}
 
-		public async Task<bool> Register(User user)
-		{
-			User? matchingUser = await context.Users.FirstOrDefaultAsync(x => x.Email == user.Email).ConfigureAwait(false);
-			if (matchingUser != null)
-			{
-				return false;
-			}
-			CurrentUser = user;
-			return true;
-		}
-	}
+        public async Task<bool> Register(User user)
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
+            // Check if the user already exists based on the unique Email
+            var existingUser = await context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
+            if (existingUser != null)
+            {
+                return false; // User already exists, return false
+            }
+
+            // Add the new user and save changes
+            context.Users.Add(user);
+            var result = await context.SaveChangesAsync();
+
+            return result > 0; // Returns true if the user was successfully added
+        }
+        public void Logout()
+        {
+            CurrentUser = null; // Clear the current user session
+        }
+    }
 }
