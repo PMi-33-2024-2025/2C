@@ -1,6 +1,8 @@
 ﻿using _2C.BusinessLogic.Services;
+using _2C.BusinessLogic.Tests.Generators;
 using _2C.DataAccess;
 using _2C.DataAccess.Models;
+using FluentAssertions;
 using Bogus;
 using Moq;
 using System;
@@ -16,12 +18,6 @@ namespace _2C.BusinessLogic.Tests
 	public class ProductServiceTests
 	{
 		private Mock<IProductService> productService;
-		private Faker<Product> faker = new Faker<Product>()
-			.RuleFor(x => x.Id, _ => new Guid())
-			.RuleFor(x => x.Name, f => f.Commerce.Product())
-			.RuleFor(x => x.Quantity, f => (int)f.Random.UInt())
-			.RuleFor(x => x.Price, f => f.Random.Double())
-			.RuleFor(x => x.StorageId, f => (long)f.Random.ULong());
 
 		[SetUp]
 		public void SetUp()
@@ -32,17 +28,14 @@ namespace _2C.BusinessLogic.Tests
 		public async Task GetById_WhenNonExistentId_ReturnsNull()
 		{
 			// Arrange
-			var products = GenerateProducts(5);
+			var storage = StorageGenerator.Generate();
+			var products = ProductsGenerator.Generate(5).WithStorage(storage);
 			Guid nonExistentId = Guid.NewGuid();
 			// Act
 			productService.Setup(m => m.GetById(nonExistentId)).Returns(Task.FromResult<Product>(null));
 			// Assert
-			productService.VerifyAll();
-		}
+			products.Should().BeNull();
 
-		private List<Product> GenerateProducts(int count)
-		{
-			return faker.Generate(count);
 		}
 
 		private void SetupGetById(Product product)

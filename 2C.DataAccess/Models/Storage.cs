@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace _2C.DataAccess.Models
 {
+	//TO BE COMPLETED
 	public class Storage
 	{
 		[Key]
