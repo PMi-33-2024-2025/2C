@@ -15,7 +15,7 @@ namespace _2C.BusinessLogic.Tests
 	[TestFixture]
 	public class ProductServiceTests
 	{
-		private Mock<ProductService> service;
+		private Mock<IProductService> productService;
 		private Faker<Product> faker = new Faker<Product>()
 			.RuleFor(x => x.Id, _ => new Guid())
 			.RuleFor(x => x.Name, f => f.Commerce.Product())
@@ -26,7 +26,7 @@ namespace _2C.BusinessLogic.Tests
 		[SetUp]
 		public void SetUp()
 		{
-			service = new Mock<ProductService>(new Mock<_2CDbContext>().Object);
+			productService = new Mock<IProductService>(new Mock<_2CDbContext>().Object);
 		}
 		[Test]
 		public async Task GetById_WhenNonExistentId_ReturnsNull()
@@ -35,14 +35,23 @@ namespace _2C.BusinessLogic.Tests
 			var products = GenerateProducts(5);
 			Guid nonExistentId = Guid.NewGuid();
 			// Act
-			service.Setup(m => m.GetById(nonExistentId)).Returns(Task.FromResult<Product>(null));
+			productService.Setup(m => m.GetById(nonExistentId)).Returns(Task.FromResult<Product>(null));
 			// Assert
-			service.VerifyAll();
+			productService.VerifyAll();
 		}
 
 		private List<Product> GenerateProducts(int count)
 		{
 			return faker.Generate(count);
 		}
+
+		private void SetupGetById(Product product)
+		{
+			var productId = new Guid("b94f1989-c4e7-4878-ac86-21c4a402fb43");
+
+			productService.Setup(
+				p => p.GetById(productId))
+				.ReturnsAsync(product);
+        }
 	}
 }
