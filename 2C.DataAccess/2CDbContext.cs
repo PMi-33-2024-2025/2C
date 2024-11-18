@@ -32,7 +32,7 @@ namespace _2C.DataAccess
 		}
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=1234;Database=EnterpriseDB");
+			optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=EnterpriseDB");
 		}
 	}
 }
