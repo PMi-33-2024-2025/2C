@@ -2,8 +2,9 @@
 using _2C.BusinessLogic.Tests.Generators;
 using _2C.DataAccess;
 using _2C.DataAccess.Models;
-using FluentAssertions;
 using Bogus;
+using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -17,34 +18,81 @@ namespace _2C.BusinessLogic.Tests
 	[TestFixture]
 	public class ProductServiceTests
 	{
-		private Mock<IProductService> productService;
+		private IProductService productService;
+		private Mock<_2CDbContext> dbContext;
 
 		[SetUp]
 		public void SetUp()
 		{
-			productService = new Mock<IProductService>(new Mock<_2CDbContext>().Object);
+			dbContext = new Mock<_2CDbContext>();
+			var products = new Mock<DbSet<Product>>();
+			var storages = new Mock<DbSet<Storage>>();
+			var users = new Mock<DbSet<User>>();
+			var roles = new Mock<DbSet<Role>>();
+			dbContext.Object.Products = products.Object;
+			dbContext.Object.Storages = storages.Object;
+			dbContext.Object.Users = users.Object;
+			dbContext.Object.Roles = roles.Object;
+			productService = new ProductService(dbContext.Object);
 		}
 		[Test]
 		public async Task GetById_WhenNonExistentId_ReturnsNull()
 		{
 			// Arrange
-			var storage = StorageGenerator.Generate();
-			var products = ProductsGenerator.Generate(5).WithStorage(storage);
 			Guid nonExistentId = Guid.NewGuid();
 			// Act
-			productService.Setup(m => m.GetById(nonExistentId)).Returns(Task.FromResult<Product>(null));
+			var emptyProduct = await productService.GetById(nonExistentId);
 			// Assert
-			products.Should().BeNull();
-
+			emptyProduct.Should().BeNull();
 		}
-
-		private void SetupGetById(Product product)
+		[Test]
+		public async Task GetById_WhenIdExists_ReturnsProduct()
 		{
-			var productId = new Guid("b94f1989-c4e7-4878-ac86-21c4a402fb43");
-
-			productService.Setup(
-				p => p.GetById(productId))
-				.ReturnsAsync(product);
-        }
+			// Arrange
+			Guid IdToAdd = Guid.NewGuid();
+			dbContext.Setup(m => m.Products.Add(It.Is<Product>(p => p.Id == IdToAdd)));
+			// Act
+			var notEmptyProduct = await productService.GetById(IdToAdd);
+			// Assert
+			notEmptyProduct.Should().NotBeNull();
+			Assert.True(notEmptyProduct.Id == IdToAdd);
+		}
+		[Test]
+		public async Task Update_WhenIdExists_Ok()
+		{
+			// Arrange
+			Guid IdToAdd = Guid.NewGuid();
+			dbContext.Setup(m => m.Products.Add(It.Is<Product>(p => p.Id == IdToAdd)));
+			// Act
+			await productService.Update(IdToAdd, It.IsAny<string>(),
+				It.Is<double>(x => x > 0), It.Is<int>(x => x > 0), It.Is<long>(x => x > 0));
+		}
+		[Test]
+		public async Task Update_WhenNonExistentId_ThrowsNullReferenceException()
+		{
+			// Arrange
+			Guid NonExistentId = Guid.NewGuid();
+			// Act
+			Assert.ThrowsAsync<NullReferenceException>(
+				async () =>
+				{
+					await productService.Update(NonExistentId, It.IsAny<string>(),
+						It.Is<double>(x => x > 0), It.Is<int>(x => x > 0), It.Is<long>(x => x > 0));
+				});
+		}
+		[Test]
+		public async Task Delete_WhenNonExistentId_ThrowsNullReferenceException()
+		{
+			// Arrange
+			Guid NonExistentId = Guid.NewGuid();
+			// Assert
+			Assert.ThrowsAsync<NullReferenceException>(
+				// Act
+				async () =>
+				{
+					await productService.Delete(NonExistentId);
+				}
+			);
+		}
 	}
 }

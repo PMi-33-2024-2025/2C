@@ -20,7 +20,6 @@ namespace _2C.BusinessLogic.Services
 
 		public async Task Create(Product product)
 		{
-
 			await context.AddAsync(product).ConfigureAwait(false);
 			await context.SaveChangesAsync();
 		}
@@ -30,7 +29,7 @@ namespace _2C.BusinessLogic.Services
 			return await context.Products.ToListAsync().ConfigureAwait(false);
 		}
 
-		public async Task<Product> GetById(Guid id)
+		public async Task<Product?> GetById(Guid id)
 		{
 			return await context.Products.FirstOrDefaultAsync(x => x.Id == id).ConfigureAwait(false);
 		}
@@ -39,6 +38,8 @@ namespace _2C.BusinessLogic.Services
 		{
 			var productToUpdate = new Product { Id = id, Name = name, Price = price, Quantity = quantity };
 			var product = await context.Products.FirstOrDefaultAsync(x => x.Id == id).ConfigureAwait(false);
+			if (product == null)
+				throw new NullReferenceException(nameof(product));
 
 			product = productToUpdate;
 			product.StorageId = storageId;
@@ -48,10 +49,11 @@ namespace _2C.BusinessLogic.Services
 		public async Task Delete(Guid id)
 		{
 			var productToRemove = await context.Products.FirstOrDefaultAsync(x => x.Id == id).ConfigureAwait(false);
-			if (productToRemove != null)
-			{
-				context.Products.Remove(productToRemove);
-			}
+
+			if (productToRemove == null)
+				throw new NullReferenceException(nameof(productToRemove));
+			context.Products.Remove(productToRemove);
+
 			await context.SaveChangesAsync().ConfigureAwait(false);
 		}
 	}
