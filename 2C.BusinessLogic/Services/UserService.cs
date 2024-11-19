@@ -3,6 +3,7 @@ using _2C.DataAccess.DTO;
 using _2C.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,27 +36,27 @@ namespace _2C.BusinessLogic.Services
 			return false;
 		}
 
-        public async Task<bool> Register(User user)
-        {
-            if (user == null)
-                throw new ArgumentNullException(nameof(user));
+		public async Task<bool> Register(User user)
+		{
+			if (user == null)
+				throw new ArgumentNullException(nameof(user));
 
-            // Check if the user already exists based on the unique Email
-            var existingUser = await context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
-            if (existingUser != null)
-            {
-                return false; // User already exists, return false
-            }
+			// Check if the user already exists based on the unique Email
+			var existingUser = await context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
+			if (existingUser != null)
+			{
+				return false; // User already exists, return false
+			}
 
-            // Add the new user and save changes
-            context.Users.Add(user);
-            var result = await context.SaveChangesAsync();
+			// Add the new user and save changes
+			context.Users.Add(user);
+			var result = await context.SaveChangesAsync();
 
-            return result > 0; // Returns true if the user was successfully added
-        }
-        public void Logout()
-        {
-            CurrentUser = null; // Clear the current user session
-        }
-    }
+			return result > 0; // Returns true if the user was successfully added
+		}
+		public void Logout()
+		{
+			CurrentUser = null; // Clear the current user session
+		}
+	}
 }

@@ -21,10 +21,11 @@ namespace _2C.BusinessLogic.Services
 		public async Task Delete(long id)
 		{
 			var storageToRemove = await context.Storages.FirstOrDefaultAsync(x => x.Id == id).ConfigureAwait(false);
-			if (storageToRemove != null)
-			{
-				context.Storages.Remove(storageToRemove);
-			}
+
+			if (storageToRemove == null)
+				throw new NullReferenceException(nameof(storageToRemove));
+			context.Storages.Remove(storageToRemove);
+
 			await context.SaveChangesAsync().ConfigureAwait(false);
 		}
 

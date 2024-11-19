@@ -17,10 +17,10 @@ namespace _2C.DataAccess
 		}
 		public _2CDbContext() { }
 
-		public DbSet<User> Users { get; set; }
-		public DbSet<Role> Roles { get; set; }
-		public DbSet<Storage> Storages { get; set; }
-		public DbSet<Product> Products { get; set; }
+		public virtual DbSet<User> Users { get; set; }
+		public virtual DbSet<Role> Roles { get; set; }
+		public virtual DbSet<Storage> Storages { get; set; }
+		public virtual DbSet<Product> Products { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
