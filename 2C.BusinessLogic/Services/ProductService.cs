@@ -1,6 +1,8 @@
 ﻿using _2C.DataAccess;
 using _2C.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Sinks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +14,20 @@ namespace _2C.BusinessLogic.Services
 	public class ProductService : IProductService
 	{
 		private readonly _2CDbContext context;
+		private readonly ILogger logger;
 
 		public ProductService(_2CDbContext context)
 		{
 			this.context = context;
+			logger = new LoggerConfiguration()
+				.WriteTo.Console()
+				.CreateLogger();
 		}
 
 		public async Task Create(Product product)
 		{
 			await context.AddAsync(product).ConfigureAwait(false);
+			logger.Debug($"instance of product with id: {product.Id} was created");
 			await context.SaveChangesAsync();
 		}
 
@@ -43,6 +50,7 @@ namespace _2C.BusinessLogic.Services
 
 			product = productToUpdate;
 			product.StorageId = storageId;
+			logger.Debug($"instance of product with id: {product.Id} was updated");
 			await context.SaveChangesAsync().ConfigureAwait(false);
 		}
 
@@ -53,6 +61,8 @@ namespace _2C.BusinessLogic.Services
 			if (productToRemove == null)
 				throw new NullReferenceException(nameof(productToRemove));
 			context.Products.Remove(productToRemove);
+
+			logger.Debug($"instance of product with id: {productToRemove.Id} was deleted");
 
 			await context.SaveChangesAsync().ConfigureAwait(false);
 		}
