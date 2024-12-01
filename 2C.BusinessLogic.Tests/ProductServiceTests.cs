@@ -27,6 +27,7 @@ namespace _2C.BusinessLogic.Tests
 			mockProductService = new Mock<IProductService>();
 			productService = mockProductService.Object;
 		}
+
 		[Test]
 		public async Task GetById_WhenNonExistentId_ReturnsNull()
 		{
@@ -40,6 +41,7 @@ namespace _2C.BusinessLogic.Tests
 			// Assert
 			product.Should().BeNull();
 		}
+
 		[Test]
 		public async Task GetById_WhenIdExists_ReturnsProduct()
 		{
@@ -53,6 +55,7 @@ namespace _2C.BusinessLogic.Tests
 			// Assert
 			product.Should().BeEquivalentTo(productToGet);
 		}
+
 		[Test]
 		public async Task Update_WhenIdExists_Ok()
 		{
@@ -60,19 +63,21 @@ namespace _2C.BusinessLogic.Tests
 			var storageToAdd = StorageGenerator.Generate();
 			var productToAdd = ProductsGenerator.Generate().WithStorageId(storageToAdd);
 
-			mockProductService.Setup(m => m.Update(productToAdd.Id, productToAdd.Name, productToAdd.Price, productToAdd.Quantity, productToAdd.StorageId));
-
 			// Act
+			mockProductService.Setup(m => m.Update(productToAdd.Id, productToAdd.Name, productToAdd.Price, productToAdd.Quantity, productToAdd.StorageId));
 			await productService.Update(productToAdd.Id, productToAdd.Name, productToAdd.Price, productToAdd.Quantity, productToAdd.StorageId);
 		}
+
 		[Test]
 		public async Task Update_WhenNonExistentId_ThrowsNullReferenceException()
 		{
 			// Arrange
 			Product nonExistentProduct = ProductsGenerator.Generate();
 
-			mockProductService.Setup(m => m.Update(nonExistentProduct.Id, nonExistentProduct.Name, nonExistentProduct.Price, nonExistentProduct.Quantity, nonExistentProduct.StorageId)).Throws<NullReferenceException>();
 			// Act
+			mockProductService.Setup(m => m.Update(nonExistentProduct.Id, nonExistentProduct.Name, nonExistentProduct.Price, nonExistentProduct.Quantity, nonExistentProduct.StorageId)).Throws<NullReferenceException>();
+			
+			// Assert
 			Assert.ThrowsAsync<NullReferenceException>(
 				async () =>
 				{
@@ -80,7 +85,26 @@ namespace _2C.BusinessLogic.Tests
 				}
 			);
 		}
-		[Test]
+
+        [Test]
+        public void Create_ShouldCreateValidProduct()
+        {
+			// Act
+			var storage = StorageGenerator.Generate();
+            var product = ProductsGenerator.Generate().WithStorageId(storage);
+
+			// Assert
+			product.Should().NotBeNull();
+            product.Id.Should().NotBeEmpty();
+            product.Name.Should().NotBeNullOrWhiteSpace();
+            product.Price.Should().BeGreaterThanOrEqualTo(0);
+            product.Quantity.Should().BeInRange(0, 1_000_000);
+            product.Storage.Should().NotBeNull();
+            product.StorageId.Should().BeGreaterThan(0);
+        }
+
+
+        [Test]
 		public async Task Delete_WhenNonExistentId_ThrowsNullReferenceException()
 		{
 			// Arrange

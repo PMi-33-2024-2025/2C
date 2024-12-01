@@ -17,5 +17,12 @@ namespace _2C.BusinessLogic.Tests.Generators
         public static Storage Generate() => faker.Generate();
 
         public static List<Storage> Generate(int count) => faker.Generate(count);
+
+        public static Storage WithProducts(this Storage storage)
+        {
+            storage.Products = ProductsGenerator.Generate(new Random().Next(1, 4))
+                .WithStorage(storage).ToList();
+            return storage;
+        }
     }
 }
