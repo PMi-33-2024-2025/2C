@@ -56,6 +56,12 @@ namespace _2C
 
         private async void EditProduct_Click(object sender, RoutedEventArgs e)
         {
+            if (_userService.CurrentUser.RoleId != 1)
+            {
+                MessageBox.Show("You do not have enough rights", "Edit Product", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
             if (_productViewModel.SelectedProduct == null)
             {
                 MessageBox.Show("Please select a product to edit.", "Edit Product", MessageBoxButton.OK, MessageBoxImage.Information);
