@@ -1,11 +1,17 @@
-﻿using _2C.BusinessLogic.Services;
-using _2C.BusinessLogic.ViewModels;
-using _2C.DataAccess;
-using _2C.DataAccess.Models;
-using System.Windows;
+﻿// <copyright file="MainWindow.xaml.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
+#pragma warning disable SA1300 // Element should begin with upper-case letter
 namespace _2C
+#pragma warning restore SA1300 // Element should begin with upper-case letter
 {
+    using System.Windows;
+    using _2C.BusinessLogic.Services;
+    using _2C.BusinessLogic.ViewModels;
+    using _2C.DataAccess;
+    using _2C.DataAccess.Models;
+
     public partial class MainWindow : Window
     {
         private readonly ProductViewModel _productViewModel;
@@ -13,10 +19,10 @@ namespace _2C
 
         public MainWindow(ProductViewModel productViewModel, IUserService userService)
         {
-            _productViewModel = productViewModel;
-            _userService = userService;
+            this._productViewModel = productViewModel;
+            this._userService = userService;
 
-            DataContext = _productViewModel;
+            this.DataContext = _productViewModel;
             InitializeComponent();
         }
        
@@ -40,7 +46,7 @@ namespace _2C
                     Name = addProductWindow.ProductName,
                     Price = addProductWindow.ProductPrice,
                     Quantity = addProductWindow.ProductQuantity,
-                    StorageId = addProductWindow.ProductStorageId
+                    StorageId = addProductWindow.ProductStorageId,
                 };
 
                 // Add the new product using the ViewModel's method
