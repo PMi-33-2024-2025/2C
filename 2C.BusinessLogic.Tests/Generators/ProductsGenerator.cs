@@ -37,5 +37,7 @@ namespace _2C.BusinessLogic.Tests
 
 			return products;
 		}
+
+
 	}
 }
